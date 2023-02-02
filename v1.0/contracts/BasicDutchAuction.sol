@@ -44,29 +44,19 @@ contract BasicDutchAuction {
         uint256 price = getPrice();
 
         require(msg.value>=price, "Insufficient Funds");
-
-        finalize();
-
-        uint256 refundAmount = msg.value - price;
         
-        refund(refundAmount);
+        winnerOfTheAuction = msg.sender;
 
-        seller.transfer(msg.value - refundAmount); 
+        seller.transfer(msg.value); 
 
         return winnerOfTheAuction;
     }
 
-    function finalize() public {
-        winnerOfTheAuction = msg.sender;
-    }
+    // function finalize() public {
+        
+    // }
 
-    function refund(uint256 refundAmount) public payable {
-        if(refundAmount > 0){
-            payable(msg.sender).transfer(refundAmount);
-        }
-    }
+    // function refund(uint256 refundAmount) public payable {
 
-    function displayBalance() public view returns (uint256) {
-        return address(this).balance;
-    }
+    // }
 }

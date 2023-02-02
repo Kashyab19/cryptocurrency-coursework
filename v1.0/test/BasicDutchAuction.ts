@@ -45,16 +45,5 @@ describe("Lock", function () {
       expect(basicDutchAuctionToken.connect(otherAccount).bid({from: otherAccount.address, value: 20 })).to.be.revertedWith('Insufficient Funds');
     });
 
-
-    // it("Transfer the Amount", async function () {
-    //   const { basicDutchAuctionToken, owner, otherAccount } = await loadFixture(deployOneYearLockFixture);
-
-    //   await basicDutchAuctionToken.transfer(otherAccount.address, 1000);
-      
-    //   expect(await basicDutchAuctionToken.balances(owner.address)).to.equal(4000);
-
-    //   expect(await basicDutchAuctionToken.balances(otherAccount.address)).to.equal(1000);
-    // });
-
   });
 });
