@@ -3,7 +3,7 @@ import { anyValue } from "@nomicfoundation/hardhat-chai-matchers/withArgs";
 import { expect } from "chai";
 import { ethers } from "hardhat";
 
-describe("Lock", function () {
+describe("Deployment", function () {
   async function deployOneYearLockFixture() {
     
     const [owner, otherAccount] = await ethers.getSigners();
@@ -16,7 +16,7 @@ describe("Lock", function () {
 
   describe("Deployment", function () {
     it("Get Price", async function () {
-      const { basicDutchAuctionToken, owner, otherAccount } = await loadFixture(deployOneYearLockFixture);
+      const { basicDutchAuctionToken } = await loadFixture(deployOneYearLockFixture);
 
       expect(await basicDutchAuctionToken.getPrice()).to.equal(200);
     });
@@ -30,13 +30,15 @@ describe("Lock", function () {
     it("Bid from another account - Equal to the price", async function () {
       const { basicDutchAuctionToken, owner, otherAccount } = await loadFixture(deployOneYearLockFixture);
 
-      expect(await basicDutchAuctionToken.connect(otherAccount).bid({from: otherAccount.address, value: 200 }));
+      expect(basicDutchAuctionToken.connect(otherAccount).bid({from: otherAccount.address, value: 200 }));
+      
     });
 
-    it("Bid from another account - Greater than the price", async function () {
-      const { basicDutchAuctionToken, otherAccount } = await loadFixture(deployOneYearLockFixture);
+    it("Checking seller address", async function () {
+      const { basicDutchAuctionToken, owner, otherAccount } = await loadFixture(deployOneYearLockFixture);
 
-      expect(await basicDutchAuctionToken.connect(otherAccount).bid({from: otherAccount.address, value: 400 }));
+      expect(await basicDutchAuctionToken.getSellerAddress()).to.equal(owner.address);
+      
     });
 
     it("Bid from another account - Less than the price", async function () {

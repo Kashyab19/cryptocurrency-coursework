@@ -15,17 +15,18 @@ contract BasicDutchAuction {
     uint256 finalBlock;
 
     address public winnerOfTheAuction = address(0x0);
-    //Owner of the contract
-    address payable public immutable seller;
+    
+    address payable immutable seller;
 
     constructor(uint256 _reservePrice, uint256 _numBlocksAuctionOpen, uint256 _offerPriceDecrement) {
-        require(_reservePrice>0 && _numBlocksAuctionOpen>0 && _offerPriceDecrement>0, "Set the basic parameters");
         reservePrice = _reservePrice;
         numBlocksAuctionOpen = _numBlocksAuctionOpen;
         offerPriceDecrement = _offerPriceDecrement;
         seller = payable(msg.sender);
         
         initialPrice = _reservePrice + (_numBlocksAuctionOpen * _offerPriceDecrement);
+        
+        
         initialBlock = block.number;
         finalBlock = block.number + numBlocksAuctionOpen;
     }
@@ -34,13 +35,15 @@ contract BasicDutchAuction {
         return initialPrice - ((block.number - initialBlock) * offerPriceDecrement);
     }
     function bid() public payable returns(address) {
-        //Checking if there is already a winner
-        require(winnerOfTheAuction == address(0x0), "Auction is closed");
+        require(isAuctionOpen, "Auction is closed");
+        
+        require(winnerOfTheAuction == address(0x0), "Winner is declared and auction is closed");
 
         require(msg.sender != seller, "Seller is not permitted to bid");
 
-        require(block.number < finalBlock, "Rounds have exceeded");
+        require(block.number < finalBlock, "Rounds have exceeded and auction is closed");
 
+        require(address(this).balance>0, "Please recharge your wallet");
         uint256 price = getPrice();
 
         require(msg.value>=price, "Insufficient Funds");
@@ -49,7 +52,13 @@ contract BasicDutchAuction {
 
         seller.transfer(msg.value); 
 
+        isAuctionOpen = false;
+
         return winnerOfTheAuction;
+    }
+
+    function getSellerAddress() public view returns(address){
+        return seller;
     }
 
     // function finalize() public {
