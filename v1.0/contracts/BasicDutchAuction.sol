@@ -43,6 +43,8 @@ contract BasicDutchAuction {
 
         require(block.number < finalBlock, "Rounds have exceeded and auction is closed");
 
+        require(msg.value>= reservePrice, "Please enter a price greater than reserve price");
+
         require(address(this).balance>0, "Please recharge your wallet");
         uint256 price = getPrice();
 
