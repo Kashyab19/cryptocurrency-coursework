@@ -1,0 +1,30 @@
+{
+  "name": "dutch-auction-v2.0",
+  "version": "1.0.0",
+  "description": "Second version of the Dutch Auction",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kashyab19/cryptocurrency-coursework.git"
+  },
+  "keywords": [
+    "Typescript",
+    "Solidity",
+    "Hardhat",
+    "Blockchain",
+    "Web3"
+  ],
+  "author": "Kashyab Murali",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Kashyab19/cryptocurrency-coursework/issues"
+  },
+  "homepage": "https://github.com/Kashyab19/cryptocurrency-coursework#readme",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^2.0.1",
+    "hardhat": "^2.12.6"
+  }
+}
