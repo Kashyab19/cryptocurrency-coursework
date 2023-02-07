@@ -7,7 +7,7 @@ contract BasicDutchAuction {
     uint256 numBlocksAuctionOpen;
     uint256 immutable offerPriceDecrement;
     uint256 immutable initialPrice;
-
+    uint256 nftTokenId;
 
     bool isAuctionOpen = true;
 
@@ -18,14 +18,18 @@ contract BasicDutchAuction {
     
     address payable immutable seller;
 
-    constructor(uint256 _reservePrice, uint256 _numBlocksAuctionOpen, uint256 _offerPriceDecrement) {
+    address er721TokenAddress;
+
+    constructor(address _erc721TokenAddress, uint256 _nftTokenId, uint256 _reservePrice, uint256 _numBlocksAuctionOpen, uint256 _offerPriceDecrement) {
         reservePrice = _reservePrice;
         numBlocksAuctionOpen = _numBlocksAuctionOpen;
         offerPriceDecrement = _offerPriceDecrement;
+        nftTokenId = _nftTokenId;
+        er721TokenAddress = _erc721TokenAddress;
+
         seller = payable(msg.sender);
         
         initialPrice = _reservePrice + (_numBlocksAuctionOpen * _offerPriceDecrement);
-        
         
         initialBlock = block.number;
         finalBlock = block.number + numBlocksAuctionOpen;
