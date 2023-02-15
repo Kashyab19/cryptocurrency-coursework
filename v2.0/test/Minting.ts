@@ -55,7 +55,11 @@ describe("Tests", function () {
 
             it("Approving - Failure due to non-existent token id", async function(){
                 await expect(mintingToken.approve(nftDutchAuctionToken.address, 9)).to.be.revertedWith('ERC721: invalid token ID');
-            })
+            });
+
+            it("Approval - Failure - Not the owner", async function () {
+                await expect(mintingToken.connect(otherAccount).approve(nftDutchAuctionToken.address,0)).to.be.revertedWith('ERC721: approve caller is not token owner or approved for all');
+            });
             it("Approving", async function () {
                 const approvalResult = await mintingToken.approve(nftDutchAuctionToken.address, 0);
                 expect(await mintingToken.approve(nftDutchAuctionToken.address,0));
