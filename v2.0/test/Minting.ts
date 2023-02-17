@@ -65,7 +65,7 @@ describe("Tests", function () {
                 expect(await mintingToken.approve(nftDutchAuctionToken.address,0));
                 describe("Bid - After Approval", function () {
                     it("Bid - Failure - Insufficient Funds", async function () {
-                        await expect(nftDutchAuctionToken.connect(otherAccount).bid({from: otherAccount.address, value: 100 })).to.be.revertedWith('Insufficient Funds');;
+                        await expect(nftDutchAuctionToken.connect(otherAccount).bid({from: otherAccount.address, value: 100 })).to.be.revertedWith('Insufficient Funds');
                     });
 
                     it("Bid - Failure - Less than reserve price", async function () {
