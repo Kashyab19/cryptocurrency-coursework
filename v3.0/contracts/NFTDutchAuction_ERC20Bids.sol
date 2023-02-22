@@ -67,11 +67,10 @@ contract NFTDutchAuction {
 
         require(msg.sender != seller, "Seller is not permitted to bid");
 
-        require(block.number < finalBlock, "Rounds have exceeded and auction is closed");
+        require(block.number < finalBlock, "Auction is closed");
 
         require(amount >= reservePrice, "Place a bid greater than reserve price");
 
-        
         uint256 price = getPrice();
 
         require(amount >= price, "Insufficient Funds");
