@@ -24,12 +24,12 @@ contract MyContract is Initializable, OwnableUpgradeable, UUPSUpgradeable {
     uint256 initialPrice;
     uint256 nftTokenId;
 
-    bool isAuctionOpen = true;
+    bool isAuctionOpen;
 
     uint256 initialBlock;
     uint256 finalBlock;
 
-    address public winnerOfTheAuction = address(0x0);
+    address public winnerOfTheAuction;
     
     address payable seller;
     
@@ -39,14 +39,10 @@ contract MyContract is Initializable, OwnableUpgradeable, UUPSUpgradeable {
     address erc721TokenAddress;
     address erc20TokenAddress;
 
-    constructor() {
-        _disableInitializers();
-    }
-
     function initialize(address _erc20TokenAddress, address _erc721TokenAddress, uint256 _nftTokenId, uint256 _reservePrice, uint256 _numBlocksAuctionOpen, uint256 _offerPriceDecrement) initializer public {
         __Ownable_init();
         __UUPSUpgradeable_init();
-
+        winnerOfTheAuction = address(0);
         reservePrice = _reservePrice;
         numBlocksAuctionOpen = _numBlocksAuctionOpen;
         offerPriceDecrement = _offerPriceDecrement;
@@ -72,9 +68,6 @@ contract MyContract is Initializable, OwnableUpgradeable, UUPSUpgradeable {
         return initialPrice - ((block.number - initialBlock) * offerPriceDecrement);
     }
 
-    function getBalanceOfEOA() public view returns(uint256){
-        return ierc20.balanceOf(msg.sender);
-    }
     function bid(uint256 amount) public payable returns(address) {
         require(isAuctionOpen, "Auction is closed");
 
@@ -98,10 +91,6 @@ contract MyContract is Initializable, OwnableUpgradeable, UUPSUpgradeable {
         isAuctionOpen = false;
         
         return winnerOfTheAuction;
-    }
-
-    function getSellerAddress() public view returns(address){
-        return seller;
     }
 
     function _authorizeUpgrade(address newImplementation)
