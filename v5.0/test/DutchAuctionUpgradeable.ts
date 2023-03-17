@@ -1,10 +1,8 @@
 import { time, loadFixture } from "@nomicfoundation/hardhat-network-helpers";
 import { expect } from "chai";
 import { ethers, upgrades } from "hardhat";
-import { BigNumber, BigNumberish, constants, Signature, Wallet } from 'ethers'
-import { splitSignature } from 'ethers/lib/utils'
+import { BigNumber, constants} from 'ethers'
 import {MintingERC20Tokens} from "../typechain-types";
-import { token } from "../typechain-types/@openzeppelin/contracts";
 
 
 async function getPermitSignature(
@@ -63,10 +61,11 @@ async function getPermitSignature(
         )
     )
 }
+
 describe("Tests", function () {
   async function deployOneYearLockFixture() {
     
-    const [owner, otherAccount, account3] = await ethers.getSigners();
+    const [owner, otherAccount] = await ethers.getSigners();
 
     const mintingFactoryForERC20 = await ethers.getContractFactory("MintingERC20Tokens");
     const mintingTokenForERC20 = await mintingFactoryForERC20.connect(owner).deploy(1500);
@@ -81,8 +80,6 @@ describe("Tests", function () {
     it("ERC20 Tests - Max Supply Assertion", async function(){
         const {mintingTokenForERC20, owner, otherAccount} = await loadFixture(deployOneYearLockFixture);
         const maxSupply = await mintingTokenForERC20.getMaxSupply();
-        // console.log(maxSupply);
-        // expect(await mintingTokenForERC20.getMaxSupply()).to.equal(500);
 
         describe("ERC20 and ERC721 Tests", function(){
             it("ERC20 by Owner", async function () {
